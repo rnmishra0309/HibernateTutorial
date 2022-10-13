@@ -7,23 +7,21 @@ import org.hibernate.cfg.Configuration;
 import com.base.spring.model.Courses;
 import com.base.spring.model.Instructor;
 import com.base.spring.model.InstructorDetail;
-import com.base.spring.model.Student;
 
-public class DeleteStudent {
-
+public class DeleteInstructor {
+	
 	public static void main(String[] args) {
 		SessionFactory factory = new Configuration()
 				 .configure("hibernate.cfg.xml")
 				 .addAnnotatedClass(Instructor.class)
 				 .addAnnotatedClass(InstructorDetail.class)
 				 .addAnnotatedClass(Courses.class)
-				 .addAnnotatedClass(Student.class)
 				 .buildSessionFactory();
 		try {
 			Session session = factory.getCurrentSession();
 			session.beginTransaction();
-			Student student = session.get(Student.class, 4);
-			session.delete(student);
+			Instructor instructor = session.get(Instructor.class, 3);
+			session.delete(instructor);
 			session.getTransaction().commit();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -31,5 +29,5 @@ public class DeleteStudent {
 			factory.close();
 		}
 	}
-
+	
 }

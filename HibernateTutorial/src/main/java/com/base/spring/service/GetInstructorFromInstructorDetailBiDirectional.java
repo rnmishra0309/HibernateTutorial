@@ -7,29 +7,30 @@ import org.hibernate.cfg.Configuration;
 import com.base.spring.model.Courses;
 import com.base.spring.model.Instructor;
 import com.base.spring.model.InstructorDetail;
-import com.base.spring.model.Student;
 
-public class DeleteStudent {
-
+public class GetInstructorFromInstructorDetailBiDirectional {
+	
 	public static void main(String[] args) {
 		SessionFactory factory = new Configuration()
 				 .configure("hibernate.cfg.xml")
 				 .addAnnotatedClass(Instructor.class)
 				 .addAnnotatedClass(InstructorDetail.class)
 				 .addAnnotatedClass(Courses.class)
-				 .addAnnotatedClass(Student.class)
 				 .buildSessionFactory();
+		Session session = factory.getCurrentSession();
 		try {
-			Session session = factory.getCurrentSession();
 			session.beginTransaction();
-			Student student = session.get(Student.class, 4);
-			session.delete(student);
+			InstructorDetail instructorDetail = session.get(InstructorDetail.class, 3);
 			session.getTransaction().commit();
+			Instructor instructor = instructorDetail.getInstructor();
+			System.out.println(instructorDetail);
+			System.out.println(instructor);
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
+			session.close(); // handles the connection leaks issues.
 			factory.close();
 		}
 	}
-
+	
 }
